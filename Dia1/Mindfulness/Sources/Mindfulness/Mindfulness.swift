@@ -97,23 +97,23 @@ class CentroMindfulness {
     
     func admitirAluno(_ aluno: Aluno) {
         if alunos[aluno.matricula] != nil {
-            print("❌ Erro: Aluno com matrícula \(aluno.matricula) já cadastrado!")
+            print("Erro: Aluno com matrícula \(aluno.matricula) já cadastrado!")
         } else {
             alunos[aluno.matricula] = aluno
-            print("✅ Aluno \(aluno.nome) admitido com sucesso!")
+            print("Aluno \(aluno.nome) admitido com sucesso!")
         }
     }
     
     func agendarSessaoPersonal(para matricula: String) {
         guard let aluno = alunos[matricula] else {
-            print("❌ Aluno não encontrado.")
+            print("Aluno não encontrado.")
             return
         }
         
         if aluno.plano.temPersonal {
-            print("🚀 Sessão de Personal agendada para \(aluno.nome)!")
+            print("Sessão de Personal agendada para \(aluno.nome)!")
         } else {
-            print("⚠️ Bloqueado: O plano \(aluno.plano.nome) não inclui Personal Trainer.")
+            print("Bloqueado: O plano \(aluno.plano.nome) não inclui Personal Trainer.")
         }
     }
 }
