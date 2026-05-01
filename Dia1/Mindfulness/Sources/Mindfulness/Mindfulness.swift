@@ -2,41 +2,40 @@
 // https://docs.swift.org/swift-book
 
 
-
-
-
 /*
-        CONTRATOS DE COMPORTAMENTO
+        Aplicativo Mindfulness
 
 */
 
-protocol Manutencao {
-    // propriedades de leitura (nome do item e histórico)
-    var nomeItem: String { get }
-    var historicoItem: [String] { get }
-    
-    // ações (realização de reparo informando data e status de regularidade)
-    func realizarReparo(data: String, statusRegularidade: Bool) -> Bool
+//nível de experiência do aluno (Iniciante, Intermediário, Avançado)
+enum NivelPratica {
+    case iniciante, intermediario, avancado
 }
 
-struct Equipamento: Manutencao {
-    let nomeItem: String
-    var historicoItem: [String] = []
-    //estado de funcionamento que, quando defeituoso, deve obrigatoriamente fazer com que a tentativa de manutenção falhe.
-    var estadoFuncionamento: String 
-
-    
-    func realizarReparo(data: String, statusRegularidade: Bool) -> Bool {
-        if estadoFuncionamento == "defeituoso" {
-            print("Erro: Não é possível realizar manutenção em item defeituoso.")
-            return false
-        }
-        
-        print("Manutenção realizada no item \(nomeItem) em \(data).")
-        return true
-    }
+//categorias de aulas oferecidas (Musculação, Spinning, Yoga, Funcional, Luta).
+enum CategoriaSessao {
+    case aulaMeditacao, aulaTaichi, aulaYoga, aulaPilates, aulaAlongamento, aulaMusculacao, aulaJump, aulaFuncional
 }
 
+//planos de assinatura da academia. 
+//propriedades estritas e obrigatórias de negócio: 
+//nome, valor da mensalidade, indicador de inclusão de personal trainer, limite de aulas coletivas e duração em meses. 
+
+struct PlanoMindfulness {
+    let nome: String
+    let mensalidade: Double
+    let temPersonal: Bool
+    let limiteAulas: Int
+    let duracaoMeses: Int
+}
+
+// Crie um catálogo em memória simulando um banco de dados com instâncias pré-definidas (Mensal, Trimestral, Anual).
+enum TipoRecorrencia: String {
+    case mensal = "Mensal"
+    case trimestral = "Trimestral"
+    case semestral = "Semestral"
+    case anual = "Anual"
+}
 @main
 struct Mindfulness {
     static func main() {

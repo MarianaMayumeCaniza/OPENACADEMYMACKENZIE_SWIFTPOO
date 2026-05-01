@@ -1,0 +1,5 @@
+@startuml
+Mari -> Apple: Oi, tudo bem?
+Apple --> Mari: Tudo bem e vc
+Mari -> Apple: Estou aprendendo Swift!!
+@enduml
