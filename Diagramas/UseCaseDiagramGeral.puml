@@ -62,11 +62,18 @@ rectangle "Perfil Alunos" #line.dashed {
     actor "Avançado" as Avançado
 }
 
-rectangle "Tipo de Contrato " #line.dashed {
+rectangle "Tipo de Contrato Aluno " #line.dashed {
     rectangle "Mensal" as Mensal
     rectangle "Trimestral" as Trimestral
     rectangle "Semestral" as Semestral
     rectangle "Anual" as Anual
+}
+
+rectangle "Tipo de Contrato Professor " #line.dashed {
+    rectangle "Trainee" as Trainee
+    rectangle "Fixo" as Fixo
+    rectangle "Temporario" as Temporario
+    
 }
 
 
