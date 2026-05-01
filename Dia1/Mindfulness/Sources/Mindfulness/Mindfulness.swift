@@ -203,10 +203,13 @@ class Professor: Pessoa {
 }
 
 // -------- Relacionado Informacoes das Pessoas ----------------
+ //Aqui é para executar uma chamada por vez!
+@MainActor 
 class GeradorMatriculaAluno {
-    private var contador: Int = 0
+    // 
+    private static var contador: Int = 0
 
-    func gerar() -> String {
+    static func gerar() -> String {
         contador += 1
         return "A\(contador)"
     }
@@ -222,20 +225,28 @@ class GeradorMatriculaProfessor {
 }
 
 class AlunoRepository {
-    private var alunos: [String: Aluno] = [:]
+    private var alunos: [String: Aluno] = [:] //Dicionario do aluno para guardar alunos
 
     // CREATE
+    // _ variavel: Quando eu dor digitar a funçao nao precisa escrever o nome dela! legal!
     func salvar(_ aluno: Aluno) {
         alunos[aluno.matricula] = aluno
     }
 
     // READ
-    func buscar(matricula: String) -> Aluno? {
+    func buscar(_ matricula: String) -> Aluno? {
         return alunos[matricula]
+    }
+    func buscarPorCPF(_ cpf: String) -> Aluno? {
+        return alunos.values.first { $0.cpf == cpf }
+        //Sinonimo de
+        /*for aluno in alunos.values {
+            if aluno.cpf == cpf {
+            return aluno}}*/
     }
 
     // Valida
-    func existe(matricula: String) -> Bool {
+    func existe(_ matricula: String) -> Bool {
         return alunos[matricula] != nil
     }
 
@@ -256,49 +267,122 @@ class AlunoRepository {
 }
 
 
-
+@MainActor
 class CentroMindfulness {
-    var alunos: [String: Aluno] = [:] // Dicionário para busca rápida
-    
-    func admitirAluno(_ aluno: Aluno) {
-        if alunos[aluno.matricula] != nil {
-            print("Erro: Aluno com matrícula \(aluno.matricula) já cadastrado!")
-        } else {
-            alunos[aluno.matricula] = aluno
-            print("Aluno \(aluno.nome) admitido com sucesso!")
-        }
+
+    private let repo = AlunoRepository()
+
+    // Cadastro
+    func cadastrarAluno(
+    nome: String,
+    idade: Int,
+    cpf: String,
+    email: String,
+    telefone: String,
+    nivel: NivelExperiencia,
+    pacote: PacoteContratado
+    ) {
+    // CPF não pode existir senao vai ter que usar a matricula antiga!
+    if repo.buscarPorCPF(cpf) != nil {
+        print("Já existe um aluno com este CPF.")
+        return
     }
-    
-    func agendarSessaoPersonal(para matricula: String) {
-        guard let aluno = alunos[matricula] else {
-            print("Aluno não encontrado.")
+
+    let matricula = GeradorMatriculaAluno.gerar()
+
+    let aluno = Aluno(
+        nome: nome,
+        idade: idade,
+        cpf: cpf,
+        email: email,
+        telefone: telefone,
+        matricula: matricula,
+        nivel: nivel,
+        pacote: pacote
+    )
+
+    // 4. Salvar
+    repo.salvar(aluno)
+
+    print("Aluno cadastrado com sucesso! Matrícula: \(matricula)")
+}
+
+    // Buscar aluno
+    func buscarAluno(matricula: String) -> Aluno? {
+        guard let aluno = repo.buscar(matricula) else {
+            print("Aluno não encontrado")
+            return nil
+        }
+
+        return aluno
+    }
+
+    // Atualizar aluno (ex: troca de plano, nível etc)
+    func atualizarAluno(matricula: String, atualizacao: (Aluno) -> Void) {
+        guard let aluno = repo.buscar(matricula) else {
+            print("Aluno não encontrado")
             return
         }
-        
-       
+
+        atualizacao(aluno)
     }
+
+    // Remover aluno
+    func removerAluno(matricula: String) {
+        if repo.existe(matricula) {
+            repo.remover(matricula: matricula)
+            print("Aluno removido com sucesso")
+        } else {
+            print("Aluno não encontrado")
+        }
+    }
+
+    func exibirFichaAluno(matricula: String) {
+        guard let aluno = repo.buscar(matricula) else {
+            print("Erro: Aluno com matrícula \(matricula) não encontrado.")
+            return
+        }
+
+        print("\n--- FICHA DO ALUNO ---")
+        print("Matrícula: \(aluno.matricula)")
+        print("Nome: \(aluno.nome)")
+        print("Nível: \(aluno.nivel)")
+        print("Plano: \(aluno.pacote.pacote.nome) (\(aluno.pacote.tipoContrato))")
+        
+        // Aqui vemos a mágica do desconto acontecendo:
+        let valorFormatado = String(format: "%.2f", aluno.pacote.valorFinal)
+        print("Valor Mensal: R$ \(valorFormatado)")
+    }
+
 }
 @main
 struct Mindfulness {
     static func main() {
         print("Hello, world!")
-
         let centro = CentroMindfulness()
-        // [0] = Mensal, [1] = Trimestral, [2] = Anual
-        let planoEscolhido = BancoDeDadosPlanos.catalogo[0] 
-        
-        let aluno1 = Aluno(
-            nome: "Mari", 
-            email: "mari@email.com", 
-            matricula: "A01", 
-            plano: planoEscolhido, // Atribuiu o plano sem digitar valores
-            nivel: .iniciante
+
+        // 2. Vamos buscar um pacote do nosso "Banco de Dados" (ex: Pacote Ouro)
+        // O catálogo tem 0: Bronze, 1: Prata, 2: Ouro
+        let pacoteOuro = BancoDePacotes.catalogo[2]
+
+        // 3. Criamos o contrato específico (ex: Ouro Anual)
+        let contratoAnual = PacoteContratado(
+            pacote: pacoteOuro, 
+            tipoContrato: .Anual
         )
+
+        // 4. Agora sim, realizamos o cadastro do aluno!
+        centro.cadastrarAluno(
+            nome: "Gabriel",
+            idade: 28,
+            cpf: "123.456.789-00",
+            email: "gabriel@email.com",
+            telefone: "(11) 99999-9999",
+            nivel: .intermediario,
+            pacote: contratoAnual
+        )
+
+        centro.exibirFichaAluno(matricula: "A1")
         
-        centro.admitirAluno(aluno1)
-        
-        // Se a Mari quiser mudar para o plano ANUAL depois:
-        aluno1.plano = BancoDeDadosPlanos.catalogo[2] 
-        print("Upgrade feito! Novo plano: \(aluno1.plano.nome)")
     }
 }
