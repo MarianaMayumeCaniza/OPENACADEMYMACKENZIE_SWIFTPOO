@@ -305,6 +305,15 @@ class CentroMindfulness {
     repo.salvar(aluno)
 
     print("Aluno cadastrado com sucesso! Matrícula: \(matricula)")
+    print("\n--- FICHA DO ALUNO ---")
+        print("Matrícula: \(aluno.matricula)")
+        print("Nome: \(aluno.nome)")
+        print("Nível: \(aluno.nivel)")
+        print("Plano: \(aluno.pacote.pacote.nome) (\(aluno.pacote.tipoContrato))")
+        
+        // Aqui vemos a mágica do desconto acontecendo:
+        let valorFormatado = String(format: "%.2f", aluno.pacote.valorFinal)
+        print("Valor Mensal: R$ \(valorFormatado)")
 }
 
     // Buscar aluno
@@ -337,22 +346,6 @@ class CentroMindfulness {
         }
     }
 
-    func exibirFichaAluno(matricula: String) {
-        guard let aluno = repo.buscar(matricula) else {
-            print("Erro: Aluno com matrícula \(matricula) não encontrado.")
-            return
-        }
-
-        print("\n--- FICHA DO ALUNO ---")
-        print("Matrícula: \(aluno.matricula)")
-        print("Nome: \(aluno.nome)")
-        print("Nível: \(aluno.nivel)")
-        print("Plano: \(aluno.pacote.pacote.nome) (\(aluno.pacote.tipoContrato))")
-        
-        // Aqui vemos a mágica do desconto acontecendo:
-        let valorFormatado = String(format: "%.2f", aluno.pacote.valorFinal)
-        print("Valor Mensal: R$ \(valorFormatado)")
-    }
 
 }
 @main
@@ -373,16 +366,16 @@ struct Mindfulness {
 
         // 4. Agora sim, realizamos o cadastro do aluno!
         centro.cadastrarAluno(
-            nome: "Gabriel",
-            idade: 28,
-            cpf: "123.456.789-00",
-            email: "gabriel@email.com",
-            telefone: "(11) 99999-9999",
-            nivel: .intermediario,
+            nome: "Mari",
+            idade: 30,
+            cpf: "123.456.789-02",
+            email: "mari@email.com",
+            telefone: "(11) 91234-9999",
+            nivel: .iniciante,
             pacote: contratoAnual
         )
 
-        centro.exibirFichaAluno(matricula: "A1")
+    
         
     }
 }

@@ -94,7 +94,7 @@ class GeradorMatriculaAluno {
   contador: Int
 }
 
-class GeradorMatriculaProfessor {
+class GeradorMatriculaAluno {
   contador: Int
 }
 'class Contrato {
