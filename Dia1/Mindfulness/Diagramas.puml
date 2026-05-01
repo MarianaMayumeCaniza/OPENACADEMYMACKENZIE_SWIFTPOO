@@ -1,0 +1,135 @@
+@startuml
+header App Mindfulness - Mapeamento de Domínios
+title Diagrama de Casos de Uso do Aplicativo Mindfulness
+
+left to right direction
+skinparam actorStyle awesome
+
+
+' --- Aulas que a academia Oferece ---
+rectangle "Catálogo de Aulas" #SkyBlue {
+
+    package "ZenClub" #AliceBlue {
+    rectangle "Taichi" as Taichi
+    rectangle "Meditação" as Meditação
+    rectangle "Alongamento" as Alongamento
+    rectangle "Yoga" as Yoga
+    rectangle "Pilates" as Pilates
+}
+package "Fitness" #DodgerBlue {
+    rectangle "Musculação" as Musculação
+    rectangle "Jump" as Jump
+    rectangle "Funcional" as Funcional
+    rectangle "Dança" as Dança
+}
+package "Luta" #RoyalBlue {
+    rectangle "Boxe" as Boxe
+    rectangle "Muay Thai" as MuayThai
+    rectangle "Krav Maga" as KravMaga
+    rectangle "Jiu Jitsu" as JiuJitsu
+}     
+}
+
+
+' Caixa dos Funcionários 
+rectangle "Perfis de Professores" #GhostWhite {
+    actor "Especialista" as funcionarioEspecialista << Funcionario >>
+    actor "Funcionario" as Funcionario << Funcionario >>
+    actor "Personal Trainer" as PersonalTrainer
+    actor "Professor" as Professor
+    actor "Nutricionista" as Nutricionista
+    
+    ' Herança: Todos são tipos de Guias
+    Funcionario <|-- funcionarioEspecialista
+    Funcionario <|-- Professor
+    funcionarioEspecialista <|-- PersonalTrainer
+    funcionarioEspecialista <|-- Nutricionista
+
+    
+}
+
+
+' --- Planos dos Alunos ---
+rectangle "Planos Alunos" #line.dashed {
+    actor "Plano Bronze: Zen" as Bronze
+    actor "Plano Prata: Zen + Fitness" as Prata
+    actor "Plano Ouro: Zen + Fitness + Luta" as Ouro
+}
+
+rectangle "Perfil Alunos" #line.dashed {
+    actor "Iniciante" as Iniciante
+    actor "Intermediario" as Intermediario
+    actor "Avançado" as Avançado
+}
+
+' --- Definição dos Atores ---
+actor "Aluno" as Aluno << Aluno >>
+actor "Sistema" as Admin << Admin>>
+actor "Funcionario" as funcionarioSistema <<Funcionario>>
+
+'control "Validador de Agendamento" as Motor
+'boundary "Tela de Yoga" as Tela
+'Abstração dos Especialistas (Hierarquia)
+'User -> Tela : Toca em "Agendar"
+
+
+package "Sistema Mindfulness" {
+    
+    ' Package aninhado (Módulo Central/Cérebro)
+    package "Módulo Central" #LightBlue {
+        usecase "UC7: Gerenciar Planos e Relatórios" as UC7
+        usecase "UC4: Manutenção de Equipamento" as UC4
+    } 
+
+    ' Casos de Uso do Aluno
+    package "Módulo do Aluno" {
+        usecase "UC1: Realizar Inscrição em Aula" as UC1
+        usecase "UC2: Agendar Sessão de Personal" as UC2
+        usecase "UC3: Consultar Plano Nutricional" as UC3
+    }
+    
+    ' Outros casos fora de sub-pacotes mas dentro do Sistema
+    usecase "UC5: Confirmar Sessão Individual" as UC5
+    usecase "UC6: Atualizar Dieta do Aluno" as UC6
+}
+
+' --- Conexões (Relacionamentos) ---
+
+funcionarioSistema <|-- Funcionario
+' O Aluno interage com as funcionalidades de consumo [cite: 553, 586]
+Aluno --> UC1
+Aluno --> UC2
+Aluno --> UC3
+
+' O Personal Trainer faz o agendamento individual [cite: 478, 588]
+funcionarioSistema --> UC5
+UC2 ..> UC5 : <<include>>
+
+' O Professor gerencia turmas coletivas (Yoga, Tai Chi, etc) 
+funcionarioSistema --> UC1
+
+' O Nutricionista cuida da parte alimentar [cite: 480, 487]
+funcionarioSistema --> UC6
+UC3 ..> UC6 : <<include>>
+
+' O Guia (todos eles) pode reportar manutenção [cite: 556, 589]
+funcionarioSistema --> UC4
+
+' O Admin gerencia o sistema central [cite: 459, 586]
+Admin --> UC7
+
+' --- Notas de Regras de Negócio ---
+note right of UC2
+  **Trava de Negócio:**
+  Só permitido se o plano 
+  do aluno autorizar. 
+end note
+
+note bottom of UC1
+  **Validação:** Verifica vagas e evita 
+  duplicidade. 
+end note
+
+@enduml
+
+
