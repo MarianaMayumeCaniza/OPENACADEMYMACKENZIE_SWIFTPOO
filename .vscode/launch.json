@@ -1,0 +1,24 @@
+{
+    "configurations": [
+        {
+            "type": "swift",
+            "request": "launch",
+            "args": [],
+            "cwd": "${workspaceFolder:OPENACADEMYMACKENZIE_SWIFTPOO}/Dia1\\Mindfulness",
+            "name": "Debug Mindfulness (Dia1\\Mindfulness)",
+            "target": "Mindfulness",
+            "configuration": "debug",
+            "preLaunchTask": "swift: Build Debug Mindfulness (Dia1\\Mindfulness)"
+        },
+        {
+            "type": "swift",
+            "request": "launch",
+            "args": [],
+            "cwd": "${workspaceFolder:OPENACADEMYMACKENZIE_SWIFTPOO}/Dia1\\Mindfulness",
+            "name": "Release Mindfulness (Dia1\\Mindfulness)",
+            "target": "Mindfulness",
+            "configuration": "release",
+            "preLaunchTask": "swift: Build Release Mindfulness (Dia1\\Mindfulness)"
+        }
+    ]
+}
