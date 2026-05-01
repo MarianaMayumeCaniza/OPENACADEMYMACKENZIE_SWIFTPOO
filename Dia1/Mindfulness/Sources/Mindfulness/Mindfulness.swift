@@ -38,7 +38,7 @@ struct PlanoMindfulness {
 
 // Crie um catálogo em memória simulando um banco de dados com instâncias pré-definidas (Mensal, Trimestral, Anual).
 enum TipoRecorrencia: String {
-    case mensal = "Mensal"
+    case mensal = "Mensal" 
     case trimestral = "Trimestral"
     case semestral = "Semestral"
     case anual = "Anual"

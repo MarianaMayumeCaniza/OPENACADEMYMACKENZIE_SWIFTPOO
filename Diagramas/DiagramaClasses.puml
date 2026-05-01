@@ -21,37 +21,27 @@ enum NomeAula {
   jiuJitsu
 }
 
-' ===== STRUCTS  =====
-class Endereco <<struct>> {
-  rua: String
-  numero: Int
-  cidade: String
-  estado: String
+enum TipoContrato {
+  Mensal
+  Trimestral
+  Semestral
+  Anual
 }
 
-class Horario <<struct>> {
-  diaSemana: String
-  horaInicio: String
-  horaFim: String
+enum NomePlano{
+    Bronze
+    Prata
+    Ouro
+}
+
+' ===== STRUCTS  =====
+
+class Pagamento <<struct>> {
+  valor: Double
+  metodo: MetodoPagamento
 }
 
 ' ===== CLASSES =====
-class Pessoa {
-  nome: String
-  cpf: String
-  email: String
-  telefone: String
-  endereco: Endereco
-}
-
-class Aluno {
-  nivel: NivelExperiencia
-}
-
-class Professor {
-  modalidades: String
-}
-
 class Aula {
   nome: NomeAula
   categoria: CategoriaAula
@@ -59,23 +49,46 @@ class Aula {
   capacidade: Int
 }
 
-class Plano {
-  nome: String
+class PacoteFechado {
+  nome: NomePlano
+  tipoContrato: TipoContrato
+  descricaoComposicao: List<CategoriaAula>
   valor: Double
 }
 
-class Contrato {
-  dataInicio: Date
-  ativo: Bool
+class Pessoa {
+  nome: String
+  idade: Int
+  cpf: String
+  email: String
+  telefone: String
 }
+
+class Aluno extends Pessoa {
+  matricula: String
+  nivelExperiencia: NivelExperiencia
+  pacoteContratado: PacoteContratado
+}
+
+class Professor extends Pessoa {
+  matricula: String
+  modalidades: NomeAula
+}
+
+
+
+'class Contrato {
+'  dataInicio: Date
+'  ativo: Bool
+'}
 
 ' ===== RELAÇÕES =====
 Pessoa "1" -- "0..1" Aluno
 Pessoa "1" -- "0..1" Professor
 
-Aluno --> Plano
-Aluno --> Contrato
+Aluno "1" --> "1" PacoteContratado
+PacoteContratado "1" --> "1" PacoteFechado
 
-Professor --> Aula
+Professor "1" --> "0..*" Aula
 
 @enduml
