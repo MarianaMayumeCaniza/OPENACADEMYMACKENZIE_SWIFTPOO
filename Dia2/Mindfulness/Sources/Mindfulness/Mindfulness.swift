@@ -75,3 +75,4 @@ struct Mindfulness {
         aulaGrupo.inscreverAluno("Bia")    
         aulaGrupo.inscreverAluno("João")   
 }
+}
