@@ -1,0 +1,39 @@
+@startuml
+
+|Aluno Novo|
+start
+:Deseja fazer matrícula;
+
+|Administrador|
+:Inicia matrícula do aluno;
+
+:Preenche dados básicos obrigatórios(CPF, email, telefone);
+ 
+|Sistema|
+while (Dados Obrigatorios preenchidos?) is (Não)
+    :Preenche dados obrigatórios;
+    :Corrige informações;
+endwhile (Sim)
+
+|Sistema|
+:Libera escolha de plano;
+
+|Administrador|
+:Preenche informações (opcional;)
+:Seleciona plano;
+:Define contrato;
+
+:Registra pagamento;
+
+|Sistema|
+while (Efetuado pagamento com sucesso?) is (Não)
+    :Informa erro no pagamento;
+    |Administrador|
+    :Tentar pagamento novamente;
+    endwhile (Sim)
+
+:Cria matrícula e cadastro do aluno;
+        
+
+stop
+@enduml

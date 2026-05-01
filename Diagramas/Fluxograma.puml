@@ -1,0 +1,17 @@
+@startuml
+
+start
+
+:Aluno acessa catálogo;
+
+:Seleciona aula;
+
+if (Tem vaga?) then (Sim)
+  :Confirma agendamento;
+else (Não)
+  :Exibe indisponível;
+endif
+
+stop
+
+@enduml

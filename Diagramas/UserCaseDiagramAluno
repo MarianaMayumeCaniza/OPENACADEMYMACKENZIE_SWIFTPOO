@@ -112,7 +112,7 @@ UC2 ..> UC5 : <<include>>
 ' O Professor gerencia turmas coletivas (Yoga, Tai Chi, etc) 
 funcionarioSistema --> UC1
 
-' O Nutricionista cuida da parte alimentar [cite: 480, 487]
+
 funcionarioSistema --> UC6
 UC3 ..> UC6 : <<include>>
 
