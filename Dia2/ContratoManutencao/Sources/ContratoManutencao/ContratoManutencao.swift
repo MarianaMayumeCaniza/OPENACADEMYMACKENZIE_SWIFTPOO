@@ -2,9 +2,6 @@
 // https://docs.swift.org/swift-book
 
 
-
-
-
 /*
         CONTRATOS DE COMPORTAMENTO
 
@@ -38,13 +35,8 @@ struct Equipamento: Manutencao {
 }
 
 @main
-struct Mindfulness {
+struct ContratoManutencao {
     static func main() {
         print("Hello, world!")
-        print("--- Iniciando Testes do Dia 2 ---")
-        
-        // Testando Equipamento
-        let banco = Equipamento(nomeItem: "Banco de Supino", estadoFuncionamento: "defeituoso")
-        _ = banco.realizarReparo(data: "30/04", statusRegularidade: true)
     }
 }
