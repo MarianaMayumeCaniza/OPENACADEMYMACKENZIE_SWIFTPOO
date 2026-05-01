@@ -1,0 +1,41 @@
+@startuml
+
+|Administrador|
+start
+
+:Inicia contratação do professor;
+
+:Preenche dados básicos obrigatórios(CPF, email, telefone);
+ 
+|Sistema|
+while (Dados Obrigatorios preenchidos?) is (Não)
+    :Preenche dados obrigatórios;
+    :Corrige informações;
+endwhile (Sim)
+
+|Sistema|
+:Libera para seleção de Classes;
+
+
+
+|Administrador|
+if (Possui aulas fixas?) then (Sim)
+    :Define aulas fixas;
+else (Não)
+    :Pula etapa;
+endif
+
+
+:Define modalidades que o profissional atende;
+
+:Define tipo de contrato(trainee, fixo, provisorio);
+
+|Sistema|
+:Registra vínculo do professor;
+
+:Gera Matricula ;
+
+:Professor cadastrado com sucesso;
+
+stop
+@enduml
