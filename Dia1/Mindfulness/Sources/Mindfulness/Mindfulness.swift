@@ -7,6 +7,7 @@ import Foundation
 
 */
 
+
 //nível de experiência do aluno (Iniciante, Intermediário, Avançado)
 // Níveis de experiência do aluno
 enum NivelExperiencia {
@@ -15,78 +16,242 @@ enum NivelExperiencia {
     case avancado
 }
 
+// -------- Relacionado as Aulas ----------------
 // Categorias de aulas oferecidas
 enum CategoriaAula {
-    case musculacao
-    case spinning
-    case yoga
-    case funcional
-    case luta
+    case Zen
+    case Fitness
+    case Luta
+
 }
+
+// Categorias de aulas oferecidas
+enum NomeAula {
+    case Alongamento
+    case Meditacao
+    case Taichi
+    case Pilates
+    case Yoga
+    case Jump
+    case Musculacao
+    case Spinning
+    case Funcional
+    case MuayThai
+    case JiuJitsu
+    case KravMaga
+    case Boxe
+}
+
+// -------- Relacionado ao Plano ----------------
+// Categorias de aulas oferecidas
+enum TipoContrato {
+    case Mensal
+    case Trimestral
+    case Semestral
+    case Anual
+
+    /*func fatorDesconto() -> Double {
+        switch self {
+        case .Mensal: return 0.0
+        case .Trimestral: return 0.05
+        case .Semestral: return 0.10
+        case .Anual: return 0.15
+        }
+    }*/
+}
+
+enum NomePlano {
+    case Bronze
+    case Prata
+    case Ouro
+    
+}
+
+
 
 //planos de assinatura da academia. 
 //propriedades estritas e obrigatórias de negócio: 
 //nome, valor da mensalidade, indicador de inclusão de personal trainer, limite de aulas coletivas e duração em meses. 
 
-struct PlanoMindfulness {
-    let nome: String
-    let mensalidade: Double
-    let temPersonal: Bool
-    let limiteAulas: Int
-    let duracaoMeses: Int
-}
 
-// Crie um catálogo em memória simulando um banco de dados com instâncias pré-definidas (Mensal, Trimestral, Anual).
-enum TipoRecorrencia: String {
-    case mensal = "Mensal" 
-    case trimestral = "Trimestral"
-    case semestral = "Semestral"
-    case anual = "Anual"
-}
-
-
-
+//                        ===== STRUCTS  =====
 // Catálogo em memória simulando o banco de dados
-struct BancoDeDadosPlanos {
-    static let catalogo: [PlanoMindfulness] = [
-        PlanoMindfulness(nome: "Mensal", mensalidade: 150.0, temPersonal: false, limiteAulas: 10, duracaoMeses: 1),
-        PlanoMindfulness(nome: "Trimestral", mensalidade: 400.0, temPersonal: true, limiteAulas: 30, duracaoMeses: 3),
-        PlanoMindfulness(nome: "Anual", mensalidade: 1200.0, temPersonal: true, limiteAulas: 999, duracaoMeses: 12)
+struct PacoteFechado {
+    let nome: NomePlano
+    let valor: Double
+    let contemplaCategorias: [CategoriaAula]
+}
+
+struct BancoDePacotes {
+    static let catalogo: [PacoteFechado] = [
+        PacoteFechado(
+            nome: .Bronze,
+            valor: 120.0,
+            contemplaCategorias: [.Zen]
+        ),
+        PacoteFechado(
+            nome: .Prata,
+            valor: 175.0,
+            contemplaCategorias: [.Zen, .Fitness]
+        ),
+        PacoteFechado(
+            nome: .Ouro,
+            valor: 220.0,
+            contemplaCategorias: [.Zen, .Fitness, .Luta]
+        )
     ]
 }
+
+
+struct PacoteContratado {
+    let pacote: PacoteFechado
+    let tipoContrato: TipoContrato
+
+    var valorFinal: Double {
+        switch tipoContrato {
+        case .Mensal:
+            return pacote.valor
+        case .Trimestral:
+            return pacote.valor * 0.95
+        case .Semestral:
+            return pacote.valor * 0.90
+        case .Anual:
+            return pacote.valor * 0.85
+        }
+}
+}
+
+
+// Eu nao vou colocar o personal trainer... Vou deixar um serviço para ele contratar a parte
+//Também nao vou definir limite de aulas, vou deixar uma restrição por plano ao inves. 
+//Também nao vai ter duracao em meses... pq o NomePlano ja define a duraçao do plano até a renovação
+
+
+//                        ===== CLASSES  =====
+
 
 // Entidade genérica para pessoas
 class Pessoa {
     var nome: String
+    var idade: Int
+    var cpf: String
     var email: String
-    var funcao: String
+    var telefone: String
     
-    init(nome: String, email: String, funcao: String) {
+    init(nome: String,idade: Int,cpf: String, email: String, telefone: String) {
         self.nome = nome
-        self.email = email
-        self.funcao = funcao
+        self.idade = idade
+        self.cpf = cpf
+        self .email = email
+        self .telefone = telefone
     }
 }
 
 class Aluno: Pessoa {
-    let matricula: String
-    var plano: PlanoMindfulness
+    var matricula: String
     var nivel: NivelExperiencia
-    
-    init(nome: String, email: String, matricula: String, plano: PlanoMindfulness, nivel: NivelExperiencia) {
+    var pacote: PacoteContratado
+
+    init(
+        nome: String,
+        idade: Int,
+        cpf: String,
+        email: String,
+        telefone: String,
+        matricula: String,
+        nivel: NivelExperiencia,
+        pacote: PacoteContratado
+    ) {
         self.matricula = matricula
-        self.plano = plano
         self.nivel = nivel
-        super.init(nome: nome, email: email, funcao: "Aluno")
+        self.pacote = pacote
+
+        super.init(
+            nome: nome,
+            idade: idade,
+            cpf: cpf,
+            email: email,
+            telefone: telefone
+        )
     }
 }
 
-class Instrutor: Pessoa {
-    var especialidade: CategoriaAula
-    
-    init(nome: String, email: String, especialidade: CategoriaAula) {
-        self.especialidade = especialidade
-        super.init(nome: nome, email: email, funcao: "Instrutor")
+class Professor: Pessoa {
+    var matricula: String
+    var lecionaAulas: [NomeAula]
+
+    init(
+        nome: String,
+        idade: Int,
+        cpf: String,
+        email: String,
+        telefone: String,
+        matricula: String,
+        lecionaAulas: [NomeAula]
+    ) {
+        self.matricula = matricula
+        self.lecionaAulas = lecionaAulas
+
+        super.init(
+            nome: nome,
+            idade: idade,
+            cpf: cpf,
+            email: email,
+            telefone: telefone
+        )
+    }
+}
+
+// -------- Relacionado Informacoes das Pessoas ----------------
+class GeradorMatriculaAluno {
+    private var contador: Int = 0
+
+    func gerar() -> String {
+        contador += 1
+        return "A\(contador)"
+    }
+}
+
+class GeradorMatriculaProfessor {
+    private var contador: Int = 0
+
+    func gerar() -> String {
+        contador += 1
+        return "P\(contador)"
+    }
+}
+
+class AlunoRepository {
+    private var alunos: [String: Aluno] = [:]
+
+    // CREATE
+    func salvar(_ aluno: Aluno) {
+        alunos[aluno.matricula] = aluno
+    }
+
+    // READ
+    func buscar(matricula: String) -> Aluno? {
+        return alunos[matricula]
+    }
+
+    // Valida
+    func existe(matricula: String) -> Bool {
+        return alunos[matricula] != nil
+    }
+
+    // UPDATE
+    func editar(matricula: String, atualizacao: (Aluno) -> Void) {
+        guard let aluno = alunos[matricula] else {
+            print("Aluno não encontrado")
+            return
+        }
+
+        atualizacao(aluno)
+    }
+
+    // DELETE (faltando no seu CRUD completo)
+    func remover(matricula: String) {
+        alunos.removeValue(forKey: matricula)
     }
 }
 
@@ -110,17 +275,14 @@ class CentroMindfulness {
             return
         }
         
-        if aluno.plano.temPersonal {
-            print("Sessão de Personal agendada para \(aluno.nome)!")
-        } else {
-            print("Bloqueado: O plano \(aluno.plano.nome) não inclui Personal Trainer.")
-        }
+       
     }
 }
 @main
 struct Mindfulness {
     static func main() {
         print("Hello, world!")
+
         let centro = CentroMindfulness()
         // [0] = Mensal, [1] = Trimestral, [2] = Anual
         let planoEscolhido = BancoDeDadosPlanos.catalogo[0] 

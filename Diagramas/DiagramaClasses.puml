@@ -36,16 +36,25 @@ enum NomePlano{
 
 ' ===== STRUCTS  =====
 
-class Pagamento <<struct>> {
+struct Pagamento  {
   valor: Double
   metodo: MetodoPagamento
 }
 
-class PacoteContratado <<struct>> {
+struct PacoteFechado  {
   nome: NomePlano
-  tipoContrato: TipoContrato
   complemplaCategorias: List<CategoriaAula>
   valor: Double
+}
+
+struct PacoteContratado  {
+  pacote: PacoteFechado
+  tipoContrato: TipoContrato
+
+}
+
+struct BancoDePacotes <<repository>> {
+  catalogo: List<PacoteFechado>
 }
 ' ===== CLASSES =====
 
@@ -61,8 +70,6 @@ class Aula {
   //horario: Horario
   capacidade: Int
 }
-
-
 
 class Pessoa {
   nome: String
@@ -83,8 +90,13 @@ class Professor extends Pessoa {
   aulas: List<NomeAula>
 }
 
+class GeradorMatriculaAluno {
+  contador: Int
+}
 
-
+class GeradorMatriculaProfessor {
+  contador: Int
+}
 'class Contrato {
 '  dataInicio: Date
 '  ativo: Bool
@@ -94,8 +106,8 @@ class Professor extends Pessoa {
 Pessoa "1" -- "0..1" Aluno
 Pessoa "1" -- "0..1" Professor
 
-Aluno "1" --> "1" PacoteContratado
-
+Aluno "1" --> "1" PacoteFechado 
+PacoteFechado "1" --> "1" PacoteContratado
 Professor "1" --> "0..*" Aula
 
 
