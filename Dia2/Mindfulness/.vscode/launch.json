@@ -1,0 +1,24 @@
+{
+    "configurations": [
+        {
+            "type": "swift",
+            "request": "launch",
+            "args": [],
+            "cwd": "${workspaceFolder:Mindfulness}",
+            "name": "Debug Mindfulness",
+            "target": "Mindfulness",
+            "configuration": "debug",
+            "preLaunchTask": "swift: Build Debug Mindfulness"
+        },
+        {
+            "type": "swift",
+            "request": "launch",
+            "args": [],
+            "cwd": "${workspaceFolder:Mindfulness}",
+            "name": "Release Mindfulness",
+            "target": "Mindfulness",
+            "configuration": "release",
+            "preLaunchTask": "swift: Build Release Mindfulness"
+        }
+    ]
+}
