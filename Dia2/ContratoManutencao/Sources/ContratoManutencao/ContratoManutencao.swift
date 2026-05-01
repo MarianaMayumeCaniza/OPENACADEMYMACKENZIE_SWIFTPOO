@@ -38,5 +38,13 @@ struct Equipamento: Manutencao {
 struct ContratoManutencao {
     static func main() {
         print("Hello, world!")
+
+        print("--- Iniciando Testes do Dia 2 ---")
+        
+        // Testando Equipamento [cite: 116, 135]
+        let banco = Equipamento(nomeItem: "Banco de Supino", estadoFuncionamento: "defeituoso")
+        _ = banco.realizarReparo(data: "30/04", statusRegularidade: true)
     }
 }
+
+
