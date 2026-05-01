@@ -71,8 +71,7 @@ struct Mindfulness {
 
         
         print("Aula: \(aulaGrupo.nome) com \(aulaGrupo.instrutor)")
-        aulaGrupo.inscreverAluno("Carlos") // Sucesso
-        aulaGrupo.inscreverAluno("Bia")    // Sucesso
-        aulaGrupo.inscreverAluno("João")   // Deve falhar (lotado) [cite: 8, 21]
-    }
+        aulaGrupo.inscreverAluno("Carlos") 
+        aulaGrupo.inscreverAluno("Bia")    
+        aulaGrupo.inscreverAluno("João")   
 }
