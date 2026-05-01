@@ -1,0 +1,81 @@
+@startuml
+
+' ===== ENUMS =====
+enum NivelExperiencia {
+  iniciante
+  intermediario
+  avancado
+}
+
+enum CategoriaAula {
+    zen
+    fitness
+    luta
+}
+
+enum NomeAula {
+  musculacao
+  spinning
+  yoga
+  pilates
+  jiuJitsu
+}
+
+' ===== STRUCTS  =====
+class Endereco <<struct>> {
+  rua: String
+  numero: Int
+  cidade: String
+  estado: String
+}
+
+class Horario <<struct>> {
+  diaSemana: String
+  horaInicio: String
+  horaFim: String
+}
+
+' ===== CLASSES =====
+class Pessoa {
+  nome: String
+  cpf: String
+  email: String
+  telefone: String
+  endereco: Endereco
+}
+
+class Aluno {
+  nivel: NivelExperiencia
+}
+
+class Professor {
+  modalidades: String
+}
+
+class Aula {
+  nome: NomeAula
+  categoria: CategoriaAula
+  //horario: Horario
+  capacidade: Int
+}
+
+class Plano {
+  nome: String
+  valor: Double
+}
+
+class Contrato {
+  dataInicio: Date
+  ativo: Bool
+}
+
+' ===== RELAÇÕES =====
+Pessoa "1" -- "0..1" Aluno
+Pessoa "1" -- "0..1" Professor
+
+Aluno --> Plano
+Aluno --> Contrato
+
+Professor --> Aula
+
+@enduml
