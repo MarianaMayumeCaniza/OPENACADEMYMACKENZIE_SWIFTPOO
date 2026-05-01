@@ -41,20 +41,28 @@ class Pagamento <<struct>> {
   metodo: MetodoPagamento
 }
 
+class PacoteContratado <<struct>> {
+  nome: NomePlano
+  tipoContrato: TipoContrato
+  complemplaCategorias: List<CategoriaAula>
+  valor: Double
+}
 ' ===== CLASSES =====
+
+class ServicoExtra {
+  nome: String
+  valor: Double
+  tipo: TipoServico
+}
+
 class Aula {
-  nome: NomeAula
+  nome: ListNomeAula
   categoria: CategoriaAula
   //horario: Horario
   capacidade: Int
 }
 
-class PacoteFechado {
-  nome: NomePlano
-  tipoContrato: TipoContrato
-  descricaoComposicao: List<CategoriaAula>
-  valor: Double
-}
+
 
 class Pessoa {
   nome: String
@@ -72,7 +80,7 @@ class Aluno extends Pessoa {
 
 class Professor extends Pessoa {
   matricula: String
-  modalidades: NomeAula
+  aulas: List<NomeAula>
 }
 
 
@@ -87,8 +95,9 @@ Pessoa "1" -- "0..1" Aluno
 Pessoa "1" -- "0..1" Professor
 
 Aluno "1" --> "1" PacoteContratado
-PacoteContratado "1" --> "1" PacoteFechado
 
 Professor "1" --> "0..*" Aula
+
+
 
 @enduml
