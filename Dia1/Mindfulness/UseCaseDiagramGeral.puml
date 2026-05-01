@@ -62,10 +62,13 @@ rectangle "Perfil Alunos" #line.dashed {
     actor "Avançado" as Avançado
 }
 
-' --- Definição dos Atores ---
-actor "Aluno" as Aluno << Aluno >>
-actor "Sistema" as Admin << Admin>>
-actor "Funcionario" as funcionarioSistema <<Funcionario>>
+rectangle "Tipo de Contrato " #line.dashed {
+    rectangle "Mensal" as Mensal
+    rectangle "Trimestral" as Trimestral
+    rectangle "Semestral" as Semestral
+    rectangle "Anual" as Anual
+}
+
 
 'control "Validador de Agendamento" as Motor
 'boundary "Tela de Yoga" as Tela
@@ -75,60 +78,68 @@ actor "Funcionario" as funcionarioSistema <<Funcionario>>
 
 package "Sistema Mindfulness" {
     
-    ' Package aninhado (Módulo Central/Cérebro)
-    package "Módulo Central" #LightBlue {
-        usecase "UC7: Gerenciar Planos e Relatórios" as UC7
-        usecase "UC4: Manutenção de Equipamento" as UC4
+    ' Atribuições do Sistema geral
+    package "Módulo Central/Geral" #SlateGray {
+        usecase "UC 1: Cadastro Aluno Novo " as UC1
+        usecase "UC 2: Preencher Informações" as UC2
+        usecase "UC 3: Escolher Plano" as UC3
+        usecase "UC 4: Informar Experiencia" as UC4
+        usecase "UC 5: Escolher Contrato" as UC5
+        usecase "UC 6: Cadastro Professor Novo" as UC6
+        usecase "UC 7: Escolher Especialidade" as UC7
+        usecase "UC 8: Cadastrar Turmas" as UC8
+
+    
     } 
 
     ' Casos de Uso do Aluno
-    package "Módulo do Aluno" {
-        usecase "UC1: Realizar Inscrição em Aula" as UC1
-        usecase "UC2: Agendar Sessão de Personal" as UC2
-        usecase "UC3: Consultar Plano Nutricional" as UC3
+    package "Módulo do Aluno" #Orchid {
+        usecase "UC 9: Preencher Informações do Aluno" as UC9
+        usecase "UC 10: Contratar Serviço a Parte" as UC10
     }
+    ' Casos de Uso do Aluno
+    package "Módulo do Professor" #Salmon {
+        usecase "UC 11: Confirmar Agendamentos" as UC11
+        
+    }    
     
-    ' Outros casos fora de sub-pacotes mas dentro do Sistema
-    usecase "UC5: Confirmar Sessão Individual" as UC5
-    usecase "UC6: Atualizar Dieta do Aluno" as UC6
 }
+' --- Definição dos Atores ---
+actor "Aluno" as Aluno << Aluno >>
+actor "Sistema" as Admin << Admin>>
+actor "Funcionario" as funcionarioSistema <<Funcionario>>
 
 ' --- Conexões (Relacionamentos) ---
+'Primeiro de Tudo tem que ter o cadastro dos alunos e funcionarios
+'A unica pessoa que fara isso é o Administrador da Academia
 
-funcionarioSistema <|-- Funcionario
-' O Aluno interage com as funcionalidades de consumo [cite: 553, 586]
-Aluno --> UC1
-Aluno --> UC2
-Aluno --> UC3
+Admin --> UC1 
+'Aqui pode ser cadatro de Aluno ou Professor né... melhor separar porque as 2 classes tem informações diferentes
+UC1 --> UC3 : <<include>>
+UC1 ..>UC2  : <<extend>>
+UC1 --> UC4 : <<include>>
+UC1 --> UC5 : <<include>>
 
-' O Personal Trainer faz o agendamento individual [cite: 478, 588]
-funcionarioSistema --> UC5
-UC2 ..> UC5 : <<include>>
+'O admin tambem cadastra professores
+Admin --> UC6
+UC6 --> UC7 
 
-' O Professor gerencia turmas coletivas (Yoga, Tai Chi, etc) 
-funcionarioSistema --> UC1
+'O admin também pode ofertar mais turmas de aulas
+Admin --> UC8
 
-' O Nutricionista cuida da parte alimentar [cite: 480, 487]
-funcionarioSistema --> UC6
-UC3 ..> UC6 : <<include>>
+'O Aluno pode preencher ou editar as informações dele quando quiser
+Aluno --> UC9
+'Ele também pode contratar serviços a parte quando quiser
+Aluno --> UC10
 
-' O Guia (todos eles) pode reportar manutenção [cite: 556, 589]
-funcionarioSistema --> UC4
+' O Personal Trainer confirma o agendamento que os alunos fizeram
+funcionarioSistema --> UC11
+'UC2 ..> UC5 : <<include>>
 
-' O Admin gerencia o sistema central [cite: 459, 586]
-Admin --> UC7
+
 
 ' --- Notas de Regras de Negócio ---
-note right of UC2
-  **Trava de Negócio:**
-  Só permitido se o plano 
-  do aluno autorizar. 
-end note
 
-note bottom of UC1
-  **Validação:** Verifica vagas e evita 
-  duplicidade. 
-end note
 
 @enduml
 
