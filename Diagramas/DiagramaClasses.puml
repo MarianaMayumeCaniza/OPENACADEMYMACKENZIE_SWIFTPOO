@@ -56,6 +56,18 @@ struct PacoteContratado  {
 struct BancoDePacotes <<repository>> {
   catalogo: List<PacoteFechado>
 }
+
+struct AlunoRepository <<repository>> {
+  alunos: [String: Aluno]
+  nome: String
+  idade: Int
+  cpf: String
+  email: String
+  telefone: String
+  matricula: String
+  nivelExperiencia: NivelExperiencia
+  pacoteContratado: PacoteContratado
+}
 ' ===== CLASSES =====
 
 class ServicoExtra {
@@ -83,6 +95,8 @@ class Aluno extends Pessoa {
   matricula: String
   nivelExperiencia: NivelExperiencia
   pacoteContratado: PacoteContratado
+  Bool :cadastroAtivo
+  Pagamento: comprovanteMatricula
 }
 
 class Professor extends Pessoa {
@@ -94,7 +108,7 @@ class GeradorMatriculaAluno {
   contador: Int
 }
 
-class GeradorMatriculaAluno {
+class GeradorMatriculaProfessor {
   contador: Int
 }
 'class Contrato {
@@ -102,14 +116,29 @@ class GeradorMatriculaAluno {
 '  ativo: Bool
 '}
 
+class CentroMindfulness {
+    AlunoRepository : Aluno
+  cadastrarAluno(AlunoRepository)
+  buscarAluno (AlunoRepository)
+  atualizarAluno (AlunoRepository)
+  removerAluno (AlunoRepository)
+  }
+
+  class ExibirCadastro {
+    printMensagemSucesso()
+  }
+
+
 ' ===== RELAÇÕES =====
 Pessoa "1" -- "0..1" Aluno
 Pessoa "1" -- "0..1" Professor
 
 Aluno "1" --> "1" PacoteFechado 
 PacoteFechado "1" --> "1" PacoteContratado
+PacoteContratado "1" --> "1" Pagamento
+Pagamento "1" --> "1" CentroMindfulness
+CentroMindfulness ..> ExibirCadastro : cadastrarAluno()
 Professor "1" --> "0..*" Aula
-
 
 
 @enduml
