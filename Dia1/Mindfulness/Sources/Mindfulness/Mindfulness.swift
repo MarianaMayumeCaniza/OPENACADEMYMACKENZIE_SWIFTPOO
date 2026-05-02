@@ -102,7 +102,6 @@ struct BancoDePacotes {
     ]
 }
 
-
 struct PacoteContratado {
     let pacote: PacoteFechado
     let tipoContrato: TipoContrato
@@ -121,7 +120,11 @@ struct PacoteContratado {
 }
 }
 
-
+struct Pagamento {
+    let valor: Double
+    let metodo: String
+    let data: Date
+}
 // Eu nao vou colocar o personal trainer... Vou deixar um serviço para ele contratar a parte
 //Também nao vou definir limite de aulas, vou deixar uma restrição por plano ao inves. 
 //Também nao vai ter duracao em meses... pq o NomePlano ja define a duraçao do plano até a renovação
@@ -151,6 +154,9 @@ class Aluno: Pessoa {
     var matricula: String
     var nivel: NivelExperiencia
     var pacote: PacoteContratado
+    //Variavel para ativar ou desativar essa pessoa
+    var cadastroAtivo: Bool = false
+    var comprovanteMatricula: Pagamento?
 
     init(
         nome: String,
@@ -280,7 +286,8 @@ class CentroMindfulness {
     email: String,
     telefone: String,
     nivel: NivelExperiencia,
-    pacote: PacoteContratado
+    pacote: PacoteContratado,
+    metodoPagamento: String
     ) {
     // CPF não pode existir senao vai ter que usar a matricula antiga!
     if repo.buscarPorCPF(cpf) != nil {
@@ -290,7 +297,7 @@ class CentroMindfulness {
 
     let matricula = GeradorMatriculaAluno.gerar()
 
-    let aluno = Aluno(
+    let novoAluno = Aluno(
         nome: nome,
         idade: idade,
         cpf: cpf,
@@ -301,20 +308,43 @@ class CentroMindfulness {
         pacote: pacote
     )
 
+    
+    let recibo = Pagamento(
+            valor: novoAluno.pacote.valorFinal, 
+            metodo: metodoPagamento, 
+            data: Date()
+        )
+
+        
+
+    // REGRA DE OURO: Salva o comprovante e VIRA A CHAVE
+    novoAluno.comprovanteMatricula = recibo
+    novoAluno.cadastroAtivo = true
+
+        // 5. Salva no banco de dados
+        repo.salvar(novoAluno)
+
+        print("Bem-vinda \(nome)! Cadastro Ativo. Matrícula: \(matricula)")
+        print("💰 Pagamento de R$ \(String(format: "%.2f", recibo.valor)) recebido!")
+        print("Matrícula \(novoAluno.matricula) ATIVADA para \(novoAluno.nome)!")
+    
+
     // 4. Salvar
-    repo.salvar(aluno)
+    repo.salvar(novoAluno)
 
     print("Aluno cadastrado com sucesso! Matrícula: \(matricula)")
     print("\n--- FICHA DO ALUNO ---")
-        print("Matrícula: \(aluno.matricula)")
-        print("Nome: \(aluno.nome)")
-        print("Nível: \(aluno.nivel)")
-        print("Plano: \(aluno.pacote.pacote.nome) (\(aluno.pacote.tipoContrato))")
+        print("Matrícula: \(novoAluno.matricula)")
+        print("Nome: \(novoAluno.nome)")
+        print("Nível: \(novoAluno.nivel)")
+        print("Plano: \(novoAluno.pacote.pacote.nome) (\(novoAluno.pacote.tipoContrato))")
         
         // Aqui vemos a mágica do desconto acontecendo:
-        let valorFormatado = String(format: "%.2f", aluno.pacote.valorFinal)
+        let valorFormatado = String(format: "%.2f", novoAluno.pacote.valorFinal)
         print("Valor Mensal: R$ \(valorFormatado)")
+
 }
+
 
     // Buscar aluno
     func buscarAluno(matricula: String) -> Aluno? {
@@ -372,7 +402,9 @@ struct Mindfulness {
             email: "mari@email.com",
             telefone: "(11) 91234-9999",
             nivel: .iniciante,
-            pacote: contratoAnual
+            pacote: contratoAnual,
+            metodoPagamento: "Crédito"
+
         )
 
     
