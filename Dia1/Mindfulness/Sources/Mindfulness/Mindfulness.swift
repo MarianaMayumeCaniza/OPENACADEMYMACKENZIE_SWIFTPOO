@@ -325,7 +325,7 @@ class CentroMindfulness {
         repo.salvar(novoAluno)
 
         print("Bem-vinda \(nome)! Cadastro Ativo. Matrícula: \(matricula)")
-        print("💰 Pagamento de R$ \(String(format: "%.2f", recibo.valor)) recebido!")
+        print("Pagamento de R$ \(String(format: "%.2f", recibo.valor)) recebido!")
         print("Matrícula \(novoAluno.matricula) ATIVADA para \(novoAluno.nome)!")
     
 

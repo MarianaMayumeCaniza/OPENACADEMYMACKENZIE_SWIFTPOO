@@ -19,6 +19,26 @@
             "target": "Mindfulness",
             "configuration": "release",
             "preLaunchTask": "swift: Build Release Mindfulness (Dia1\\Mindfulness)"
+        },
+        {
+            "type": "swift",
+            "request": "launch",
+            "args": [],
+            "cwd": "${workspaceFolder:OPENACADEMYMACKENZIE_SWIFTPOO}/Dia3\\GerenciamentoMindfulness",
+            "name": "Debug GerenciamentoMindfulness (Dia3\\GerenciamentoMindfulness)",
+            "target": "GerenciamentoMindfulness",
+            "configuration": "debug",
+            "preLaunchTask": "swift: Build Debug GerenciamentoMindfulness (Dia3\\GerenciamentoMindfulness)"
+        },
+        {
+            "type": "swift",
+            "request": "launch",
+            "args": [],
+            "cwd": "${workspaceFolder:OPENACADEMYMACKENZIE_SWIFTPOO}/Dia3\\GerenciamentoMindfulness",
+            "name": "Release GerenciamentoMindfulness (Dia3\\GerenciamentoMindfulness)",
+            "target": "GerenciamentoMindfulness",
+            "configuration": "release",
+            "preLaunchTask": "swift: Build Release GerenciamentoMindfulness (Dia3\\GerenciamentoMindfulness)"
         }
     ]
 }
