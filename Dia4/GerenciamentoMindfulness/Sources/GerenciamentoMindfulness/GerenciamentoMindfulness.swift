@@ -1,7 +1,10 @@
-// The Swift Programming Language
-// https://docs.swift.org/swift-book
 import Foundation
 
+enum NivelExperiencia { case iniciante, intermediario, avancado }
+enum CategoriaAula { case Zen, Fitness, Luta }
+enum NomeAula { case Yoga, Pilates, Musculacao, Spinning } // Resumido para o exemplo
+enum TipoContrato { case Mensal, Trimestral, Semestral, Anual }
+enum NomePlano { case Bronze, Prata, Ouro }
 
 //nível de experiência do aluno (Iniciante, Intermediário, Avançado)
 // Níveis de experiência do aluno
@@ -121,9 +124,6 @@ struct Pagamento {
     let metodo: String
     let data: Date
 }
-
-
-
 
 //                        ===== CLASSES  =====
 
@@ -358,7 +358,43 @@ class CentroMindfulness {
         equipamentos.append(item)
     }
 }
+
+protocol Aula {
+    var nome: String { get }
+    var instrutor: String { get }
+}
+
+class TurmaColetiva: Aula {
+    var nome: String
+    var instrutor: String
+    var capacidadeMax: Int
+    var alunos: [String] = []
     
+    init(nome: String, instrutor: String, capMax: Int) {
+        self.nome = nome
+        self.instrutor = instrutor
+        self.capacidadeMax = capMax
+    }
+    
+    func inscrever(aluno: String) {
+        if alunos.count < capacidadeMax {
+            alunos.append(aluno)
+            print("\(aluno) inscrito na aula \(nome).")
+        } else {
+            print(" Rejeição: Aula \(nome) está lotada!")
+        }
+    }
+}
+
+class TreinoPersonal: Aula {
+    var nome: String
+    var instrutor: String
+    init(nome: String, instrutor: String) {
+        self.nome = nome
+        self.instrutor = instrutor
+    }
+}
+
 @main
 struct GerenciamentoMindfulness {
     static func main() {
@@ -381,9 +417,8 @@ struct GerenciamentoMindfulness {
             tipoContrato: .Mensal
         )
         
-                // Primeiro cadastro (Sucesso)
-        centro.cadastrarAluno(nome: "Mari", cpf: "123.456.789-01", pacote: contratoOuro)
         
+        centro.cadastrarAluno(nome: "Mari", cpf: "123.456.789-01", pacote: contratoOuro)
         // Tentativa de duplicidade por CPF
         centro.cadastrarAluno(nome: "Mariana Reetida", cpf: "123.456.789-01", pacote: contratoBronze)
 
@@ -407,5 +442,19 @@ struct GerenciamentoMindfulness {
         
         // Executa a manutenção e mostra apenas quem falhou
         centro.executarManutencaoGeral()
+        //A função/classe da aula precisa ser melhor descrita
+        //melhor detalhada... ela está bem generica
+        let aulaYoga = TurmaColetiva(nome: "Yoga", instrutor: "Bea", capMax: 1)
+        aulaYoga.inscrever(aluno: "Mari")
+        aulaYoga.inscrever(aluno: "Ana")// Ana nao cabe na aula pq so cabe 1 aluno
+
+        // Teste 5: Polimorfismo 
+        //Nao consegui testar... precisa ser melhorado esse codigo... esta confuso
+        print("\n---  POLIMORFISMO ---")
+        let comunidade: [Pessoa] = [Professor(nome: "JP", cpf: "7"), Aluno(nome: "Mari", cpf: "1", matricula: "A1", pacote: planoOuro)]
+        comunidade.forEach { print("Pessoa: \($0.nome) - Função: \($0.funcao)") }
+
+        let grade: [Aula] = [aulaYoga, TreinoVIP(nome: "Personal Camila", instrutor: "Igor")]
+        grade.forEach { print("Aula: \($0.nome) - Instrutor: \($0.instrutor)") }
     }
 }
