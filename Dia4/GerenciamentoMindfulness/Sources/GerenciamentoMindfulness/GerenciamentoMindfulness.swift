@@ -6,75 +6,7 @@ enum NomeAula { case Yoga, Pilates, Musculacao, Spinning } // Resumido para o ex
 enum TipoContrato { case Mensal, Trimestral, Semestral, Anual }
 enum NomePlano { case Bronze, Prata, Ouro }
 
-//nível de experiência do aluno (Iniciante, Intermediário, Avançado)
-// Níveis de experiência do aluno
-enum NivelExperiencia {
-    case iniciante
-    case intermediario
-    case avancado
-}
-
-// -------- Relacionado as Aulas ----------------
-// Categorias de aulas oferecidas
-enum CategoriaAula {
-    case Zen
-    case Fitness
-    case Luta
-
-}
-
-// Categorias de aulas oferecidas
-enum NomeAula {
-    case Alongamento
-    case Meditacao
-    case Taichi
-    case Pilates
-    case Yoga
-    case Jump
-    case Musculacao
-    case Spinning
-    case Funcional
-    case MuayThai
-    case JiuJitsu
-    case KravMaga
-    case Boxe
-}
-
-// -------- Relacionado ao Plano ----------------
-// Categorias de aulas oferecidas
-enum TipoContrato {
-    case Mensal
-    case Trimestral
-    case Semestral
-    case Anual
-
-    /*func fatorDesconto() -> Double {
-        switch self {
-        case .Mensal: return 0.0
-        case .Trimestral: return 0.05
-        case .Semestral: return 0.10
-        case .Anual: return 0.15
-        }
-    }*/
-}
-
-
-enum NomePlano {
-    case Bronze
-    case Prata
-    case Ouro
-    
-}
-
-
-
-//planos de assinatura da academia. 
-//propriedades estritas e obrigatórias de negócio: 
-//nome, valor da mensalidade, indicador de inclusão de personal trainer, limite de aulas coletivas e duração em meses. 
-
-
-//                        ===== STRUCTS  =====
-// Catálogo em memória simulando o banco de dados
+// Catálogo  banco de dados
 struct PacoteFechado {
     let nome: NomePlano
     let valor: Double
